@@ -1,0 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sravonin <sravonin@student.42antananari    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 10:57:24 by sravonin          #+#    #+#             */
+/*   Updated: 2025/01/27 08:48:31 by sravonin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub.h"
+
+t_cub *mlx_windows(int width, int height, char *title)
+{
+    t_cub *cub;
+
+    cub = malloc(sizeof(t_cub));
+    if (!cub)
+        return (NULL);
+    cub->mlx = mlx_init();
+    if (!cub->mlx)
+    {
+        free(cub);
+        return (NULL);
+    }
+    cub->win = mlx_new_window(cub->mlx, width, height, title);
+    if (!cub->win)
+    {
+        free(cub);
+        return (NULL);
+    }
+    return (cub);
+}
+
+int main()
+{
+    t_cub *cub;
+
+    cub = mlx_windows(500, 500, "cub3D");
+    if (!cub)
+        return (1);
+    mlx_loop(cub->mlx);
+    free(cub);
+    return (0);
+}
+
