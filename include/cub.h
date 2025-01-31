@@ -39,7 +39,7 @@ typedef struct s_player
 {
 	double pos_x;
 	double pos_y;
-	uint direction;
+	double direction;
 } t_player;
 
 typedef struct s_cub
