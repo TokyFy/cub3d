@@ -21,10 +21,10 @@
 
 
 #define WIN_WIDTH 1080
-#define  WIN_HEIGTH 640
+#define  WIN_HEIGTH 512
 #define MAP_WIDTH 16
 #define MAP_HEIGHT 16
-#define MAP_GRID_SIZE 16
+#define MAP_GRID_SIZE 32
 
 #define ARROW_UP 65362
 #define ARROW_DOWN 65364
@@ -70,7 +70,7 @@ void draw_square_to_img(t_mlx_image *img , uint side ,uint x , uint y)
 
 	uint color = 0x5A52A3;
 	if(side < MAP_GRID_SIZE)
-		color = 0x000022;
+		color = 0xFFFFFF;
 
 	while (j < y + side) {
 		i = x;
@@ -110,7 +110,7 @@ typedef struct s_2d_vector
 	double y;
 } t_2d_vector;
 
-void draw_line(t_mlx_image *buffer , t_2d_vector *from, t_2d_vector *to) {
+void draw_line(t_mlx_image *buffer , t_2d_vector *from, t_2d_vector *to , uint color) {
     int dx = to->x - from->x;
     int dy = to->y - from->y;
 
@@ -122,7 +122,7 @@ void draw_line(t_mlx_image *buffer , t_2d_vector *from, t_2d_vector *to) {
     float y = from->y;
     int i = 0;
     while (i <= steps) {
-    	put_pixel_img(buffer, x, y, 0x000000);
+    	put_pixel_img(buffer, x, y, color);
         x += x_inc;
         y += y_inc;
         i++;
@@ -246,25 +246,25 @@ int render_next_frame(void *ptr)
 	t_2d_vector direction;
 	from.x = cub->player->pos_x * MAP_GRID_SIZE;
 	from.y = cub->player->pos_y * MAP_GRID_SIZE;
-	direction.x = from.x + 6 * cos(cub->player->direction * (M_PI / 180));
-	direction.y = from.y + 6 * sin(cub->player->direction * (M_PI / 180));
-	draw_line(cub->buffer, &from, &direction);
+	direction.x = from.x + MAP_GRID_SIZE * cos(cub->player->direction * (M_PI / 180));
+	direction.y = from.y + MAP_GRID_SIZE * sin(cub->player->direction * (M_PI / 180));
 
 	t_2d_vector to_horz;
 	t_2d_vector to_vert;
-	double a = (int)cub->player->direction - 30;
+	double a = (int)cub->player->direction - 180;
 
-	while(a < (int)cub->player->direction + 30)
+	while(a < (int)cub->player->direction + 180)
 	{
 		find_ray_horz_intersec(&from, &to_horz, a , cub);
 		find_ray_vert_intersec(&from, &to_vert, a , cub);
 
 		if(vect_dist(&from, &to_horz) < vect_dist(&from, &to_vert))
-			draw_line(cub->buffer, &from, &to_horz);
+			draw_line(cub->buffer, &from, &to_horz , 0xB4ADEA);
 		else
-			draw_line(cub->buffer, &from, &to_vert);
-		a += .1;
+			draw_line(cub->buffer, &from, &to_vert , 0x5C4DD1);
+		a += .05;
 	}
+	draw_line(cub->buffer, &from, &direction , 0x000000);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img , 0, 0);
 	return 0;
 }
@@ -309,19 +309,19 @@ int	main(void)
 
 	char maps[MAP_HEIGHT][MAP_WIDTH] = {
 		{'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
+		{'1','0','0','0','1','0','0','0','0','0','1','0','0','0','0','1'},
 		{'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
-		{'1','0','0','0','1','1','1','0','1','0','0','0','0','0','0','1'},
-		{'1','0','0','0','0','0','1','1','1','0','0','0','0','0','0','1'},
-		{'1','0','0','0','0','0','1','1','1','0','0','0','0','0','0','1'},
-		{'1','0','0','1','0','0','1','0','0','0','0','0','0','0','0','1'},
-		{'1','0','0','1','0','0','1','0','0','0','0','0','0','0','0','1'},
-		{'1','0','0','1','1','0','1','1','0','0','0','0','0','0','0','1'},
-		{'1','0','0','1','1','0','1','0','0','0','0','0','0','0','0','1'},
-		{'1','0','0','1','0','0','1','0','0','0','0','0','1','0','0','1'},
-		{'1','0','0','1','0','0','1','0','0','0','0','0','0','0','0','1'},
-		{'1','0','0','0','0','0','0','0','0','0','0','1','0','0','0','1'},
-		{'1','0','0','0','0','0','0','0','1','0','1','0','0','0','0','1'},
-		{'1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
+		{'1','0','0','0','0','0','0','1','0','0','0','0','0','0','0','1'},
 		{'1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'}
 	};
 
@@ -334,8 +334,8 @@ int	main(void)
 
 	cub->maps = ft_calloc( sizeof(char*) , MAP_HEIGHT);
 	cub->player = ft_calloc(sizeof(t_player), 1);
-	cub->player->pos_x = 6;
-	cub->player->pos_y = 6;
+	cub->player->pos_x = 1.5;
+	cub->player->pos_y = 1.5;
 	cub->player->direction = 90;
 	int i = 0;
 	int j = 0;
