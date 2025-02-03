@@ -24,6 +24,24 @@
 # include "libft.h"
 
 
+#define WIN_WIDTH 1080
+#define WIN_HEIGTH 512
+#define MAP_WIDTH 16
+#define MAP_HEIGHT 16
+#define MAP_GRID_SIZE 8
+
+#define ARROW_UP 65362
+#define ARROW_DOWN 65364
+#define ARROW_RIGHT 65361
+#define ARROW_LEFT 65363
+
+
+typedef struct s_2d_vector
+{
+	float	x;
+	float	y;
+}			t_2d_vector;
+
 typedef struct s_mlx_image
 {
 	void		*img;
@@ -37,9 +55,9 @@ typedef struct s_mlx_image
 
 typedef struct s_player
 {
-	double pos_x;
-	double pos_y;
-	double direction;
+	float pos_x;
+	float pos_y;
+	float direction;
 } t_player;
 
 typedef struct s_cub
@@ -51,5 +69,17 @@ typedef struct s_cub
 	t_player*	player;
 }				t_cub;
 
+float	vect_dist(t_2d_vector *from, t_2d_vector *to);
+float	normalize_angle(float angle);
 
+void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
+		int color);
+void	fill_pixel_img(t_mlx_image *img, int color);
+void	draw_square_to_img(t_mlx_image *img, uint side, uint x, uint y);
+t_cub	*mlx_windows(int width, int height, char *title);
+
+void	draw_line(t_mlx_image *buffer, t_2d_vector *from, t_2d_vector *to, uint color);
+
+void	find_ray_vert_intersec(t_2d_vector *from, t_2d_vector *to, double angle, t_cub *cub);
+void	find_ray_horz_intersec(t_2d_vector *from, t_2d_vector *to, double angle, t_cub *cub);
 #endif

@@ -21,14 +21,11 @@ INC_DIR = ./include/
 LIBFT = ./libft/
 MLX = ./minilibx-linux/
 
-# Fichiers sources
-SRCS = main.c
+SRCS = main.c mlx_utils.c mlx_line.c vector_utils.c dda.c
 
-# chemins
 SRC_FILES = $(addprefix $(SRC_DIR), $(SRCS))
 OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
 
-# Includes et librairies
 IFLAGS = -I$(INC_DIR) -I$(LIBFT) -I$(MLX)
 LFLAGS = -L$(LIBFT) -lft -L$(MLX) -lmlx -lXext -lX11 -lm
 
@@ -67,4 +64,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re $(OBJ_DIR)
-
