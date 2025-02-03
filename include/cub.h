@@ -24,10 +24,10 @@
 # include "libft.h"
 
 
-#define WIN_WIDTH 1080
-#define WIN_HEIGTH 512
-#define MAP_WIDTH 16
-#define MAP_HEIGHT 16
+#define WIN_WIDTH 960
+#define WIN_HEIGTH 600
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
 #define MAP_GRID_SIZE 8
 
 #define ARROW_UP 65362

@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "mlx.h"
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -52,10 +53,10 @@ void minimaps_player(t_cub *cub , t_2d_vector zero)
 
 	from.x = cub->player->pos_x * MAP_GRID_SIZE;
 	from.y = cub->player->pos_y * MAP_GRID_SIZE;
+	a = (int)cub->player->direction - 45;
 	copy_2d_vector(&from, &temp);
 	translate_2d_vector(&temp, &zero);
-	a = (int)cub->player->direction - 30;
-	while (a < (int)cub->player->direction + 30)
+	while (a < (int)cub->player->direction + 45)
 	{
 		find_ray_horz_intersec(&from, &to_horz, a, cub);
 		find_ray_vert_intersec(&from, &to_vert, a, cub);
@@ -70,6 +71,53 @@ void minimaps_player(t_cub *cub , t_2d_vector zero)
 			draw_line(cub->buffer, &temp, &to_vert, 0x5C4DD1);
 		}
 		a += .05;
+	}
+}
+
+
+void ray_vert_draw(t_cub *cub , int nth , t_2d_vector *from , t_2d_vector *to)
+{
+	t_2d_vector start;
+	t_2d_vector end;
+	double ray_angle = (cub->player->direction - 30) + (nth * ((float)60 / WIN_WIDTH));
+	double perp_dist = vect_dist(from, to) * cos(M_PI/180 * (cub->player->direction - ray_angle));
+	float line_height = MAP_GRID_SIZE / perp_dist * (((float)WIN_WIDTH / 2) / tan((M_PI / 3)  / 2));
+
+	start.x = nth;
+	start.y = ((float)WIN_HEIGTH / 2) - (line_height / 2);
+	end.x = nth;
+	end.y = start.y + line_height;
+
+
+	draw_line(cub->buffer, &start, &end, 0x5C4DD1);
+}
+
+void threed_schene(t_cub *cub)
+{
+	t_2d_vector	from;
+	t_2d_vector	to_horz;
+	t_2d_vector	to_vert;
+	double		a;
+	int i;
+
+	from.x = cub->player->pos_x * MAP_GRID_SIZE;
+	from.y = cub->player->pos_y * MAP_GRID_SIZE;
+	a = (int)cub->player->direction - 30;
+	i = 0;
+	while (a < (int)cub->player->direction + 30)
+	{
+		find_ray_horz_intersec(&from, &to_horz, a, cub);
+		find_ray_vert_intersec(&from, &to_vert, a, cub);
+		if (vect_dist(&from, &to_horz) < vect_dist(&from, &to_vert))
+		{
+			ray_vert_draw(cub, i, &from, &to_horz);
+		}
+		else
+		{
+			ray_vert_draw(cub, i, &from, &to_vert);
+		}
+		a += (float)60 / WIN_WIDTH;
+		i++;
 	}
 }
 
@@ -104,6 +152,7 @@ int	render_next_frame(void *ptr)
 	zero.y = MAP_GRID_SIZE * 4 * 12;
 	cub = ptr;
 	fill_pixel_img(cub->buffer, 0xF6F2FF);
+	threed_schene(cub);
 	minimaps(cub, zero);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img, 0, 0);
 	return (0);
@@ -137,6 +186,8 @@ int	on_key_press(int code, void *ptr)
 		else
 			cub->player->direction -= 2;
 	}
+
+	printf("%f\n" , cub->player->direction);
 	return (1);
 }
 
@@ -150,49 +201,17 @@ int	main(void)
 	cub = mlx_windows(WIN_WIDTH, WIN_HEIGTH, "cub3D");
 	if (!cub)
 		return (1);
-	char maps[MAP_HEIGHT][MAP_WIDTH] = {{'1', '1', '1', '1', '1', '1', '1', '1','1', '1', '1', '1', '1', '1', '1', '1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '1', '0', '0', '0',
-											'0', '0', '1', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '0',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '0', '0', '0', '0', '0', '0', '1',
-											'0', '0', '0', '0', '0', '0', '0',
-											'1'},
-										{'1', '1', '1', '1', '1', '1', '1', '1',
-											'1', '1', '1', '1', '1', '1', '1',
-											'1'}};
+	char maps[MAP_HEIGHT][MAP_WIDTH] =
+	{
+		{'1', '1', '1', '1', '1', '1', '1', '1'},
+		{'1', '0', '0', '0', '0', '0', '0', '1'},
+		{'1', '0', '0', '0', '0', '0', '0', '1'},
+		{'1', '0', '0', '1', '0', '0', '0', '1'},
+		{'1', '0', '0', '0', '1', '0', '0', '1'},
+		{'1', '0', '0', '0', '0', '0', '0', '1'},
+		{'1', '0', '0', '0', '0', '0', '0', '1'},
+		{'1', '1', '1', '1', '1', '1', '1', '1'},
+	};
 	buffer = ft_calloc(sizeof(t_mlx_image), 1);
 	buffer->img = mlx_new_image(cub->mlx, WIN_WIDTH, WIN_HEIGTH);
 	buffer->width = WIN_WIDTH;
@@ -203,8 +222,8 @@ int	main(void)
 	cub->maps = ft_calloc(sizeof(char *), MAP_HEIGHT);
 	cub->player = ft_calloc(sizeof(t_player), 1);
 	cub->player->pos_x = 1.5;
-	cub->player->pos_y = 1.5;
-	cub->player->direction = 90;
+	cub->player->pos_y = 2.5;
+	cub->player->direction = 0;
 	i = 0;
 	j = 0;
 	while (j < MAP_HEIGHT)
