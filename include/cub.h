@@ -24,8 +24,8 @@
 # include "libft.h"
 
 
-#define WIN_WIDTH 960
-#define WIN_HEIGTH 600
+#define WIN_WIDTH 1080
+#define WIN_HEIGTH 640
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
 #define MAP_GRID_SIZE 8
@@ -67,10 +67,13 @@ typedef struct s_cub
 	t_mlx_image	*buffer;
 	char**		maps;
 	t_player*	player;
+	t_mlx_image* texture_01;
 }				t_cub;
 
 float	vect_dist(t_2d_vector *from, t_2d_vector *to);
 float	normalize_angle(float angle);
+void translate_2d_vector(t_2d_vector *from , t_2d_vector *to);
+void copy_2d_vector(t_2d_vector *from , t_2d_vector *to);
 
 void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		int color);
@@ -82,4 +85,8 @@ void	draw_line(t_mlx_image *buffer, t_2d_vector *from, t_2d_vector *to, uint col
 
 void	find_ray_vert_intersec(t_2d_vector *from, t_2d_vector *to, double angle, t_cub *cub);
 void	find_ray_horz_intersec(t_2d_vector *from, t_2d_vector *to, double angle, t_cub *cub);
+
+void minimaps_direction(const t_cub *cub , t_2d_vector zero);
+void minimaps_player(t_cub *cub , t_2d_vector zero);
+void minimaps(t_cub *cub , t_2d_vector zero);
 #endif

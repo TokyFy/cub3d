@@ -30,3 +30,15 @@ float	normalize_angle(float angle)
 		angle += 360.0;
 	return (angle);
 }
+
+void translate_2d_vector(t_2d_vector *from , t_2d_vector *to)
+{
+	from->x += to->x;
+	from->y += to->y;
+}
+
+void copy_2d_vector(t_2d_vector *from , t_2d_vector *to)
+{
+	to->x = from->x;
+	to->y = from->y;
+}

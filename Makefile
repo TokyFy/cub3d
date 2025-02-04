@@ -21,7 +21,8 @@ INC_DIR = ./include/
 LIBFT = ./libft/
 MLX = ./minilibx-linux/
 
-SRCS = main.c mlx_utils.c mlx_line.c vector_utils.c dda.c
+SRCS = main.c mlx_utils.c mlx_line.c vector_utils.c dda.c \
+		minimap.c
 
 SRC_FILES = $(addprefix $(SRC_DIR), $(SRCS))
 OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))
