@@ -109,6 +109,136 @@ void	threed_schene(t_cub *cub)
 	}
 }
 
+void render_floor(t_cub* cub)
+{
+    uint screen_y = WIN_HEIGTH / 2;  // Start at the middle of the screen
+    uint screen_x;
+
+    // Convert the player's direction from degrees to radians
+    float player_dir_rad = cub->player->direction * (M_PI / 180.0);
+    // Compute player's forward direction vector
+    float dirX = cos(player_dir_rad);
+    float dirY = sin(player_dir_rad);
+    // Compute camera plane (perpendicular to direction)
+    float planeX = -dirY;
+    float planeY = dirX;
+
+    while (screen_y < WIN_HEIGTH) {
+        float rowDistance = (float)WIN_HEIGTH / (2.0 * (screen_y - WIN_HEIGTH / 2));
+
+        screen_x = 0;
+        while (screen_x < WIN_WIDTH) {
+            // Calculate ray direction for this pixel
+            float rayDirX = dirX + planeX * (2 * screen_x / (float)WIN_WIDTH - 1);
+            float rayDirY = dirY + planeY * (2 * screen_x / (float)WIN_WIDTH - 1);
+
+            // Calculate absolute world coordinates
+            float worldX = cub->player->pos_x + rowDistance * rayDirX;
+            float worldY = cub->player->pos_y + rowDistance * rayDirY;
+
+            // Get the grid cell coordinates the point is in
+            int cellX = (int)floor(worldX);
+            int cellY = (int)floor(worldY);
+
+            // Get distance from nearest grid lines
+            float fracX = worldX - cellX;
+            float fracY = worldY - cellY;
+
+            uint color;
+
+            // Draw pixel black if very close to any grid line
+            // Use bitwise OR to avoid short-circuit evaluation
+            if ((fabs(fracX) <= 0.005) | (fabs(1.0 - fracX) <= 0.005) |
+                (fabs(fracY) <= 0.005) | (fabs(1.0 - fracY) <= 0.005)) {
+                color = 0x000000;  // Grid line (black)
+            } else {
+                color = 0x404040;  // Floor (dark gray)
+            }
+
+            put_pixel_img(cub->buffer, screen_x, screen_y, color);
+            screen_x++;
+        }
+        screen_y++;
+    }
+}
+
+/*
+void render_floor(t_cub* cub)
+{
+    uint screen_y = WIN_HEIGTH / 2;  // Start at the middle of the screen
+    uint screen_x;
+
+    // Convert the player's direction from degrees to radians
+    float player_dir_rad = cub->player->direction * (M_PI / 180.0);
+    // Compute player's forward direction vector
+    float dirX = cos(player_dir_rad);
+    float dirY = sin(player_dir_rad);
+    // Compute camera plane (perpendicular to direction)
+    float planeX = -dirY;
+    float planeY = dirX;
+
+    // Grid scale (adjust this to change grid density)
+    const float GRID_SCALE = 0.5f;
+
+    while (screen_y < WIN_HEIGTH) {
+        float rowDistance = (float)WIN_HEIGTH / (2.0 * (screen_y - WIN_HEIGTH / 2));
+
+        screen_x = 0;
+        while (screen_x < WIN_WIDTH) {
+            // Calculate ray direction for this pixel
+            float rayDirX = dirX + planeX * (2 * screen_x / (float)WIN_WIDTH - 1);
+            float rayDirY = dirY + planeY * (2 * screen_x / (float)WIN_WIDTH - 1);
+
+            // Calculate floor point
+            float floorX = cub->player->pos_x + rowDistance * rayDirX;
+            float floorY = cub->player->pos_y + rowDistance * rayDirY;
+
+            // Scale the coordinates for grid density
+            floorX /= GRID_SCALE;
+            floorY /= GRID_SCALE;
+
+            uint color;
+
+            // Check if we're on a grid line by looking at the decimal part
+            float fracX = floorX - floor(floorX);
+            float fracY = floorY - floor(floorY);
+
+            if (fracX < 0.02f || fracX > 0.98f ||
+                fracY < 0.02f || fracY > 0.98f) {
+                color = 0x000000;  // Grid line (black)
+            } else {
+                color = 0x404040;  // Floor (dark gray)
+            }
+
+            put_pixel_img(cub->buffer, screen_x, screen_y, color);
+            screen_x++;
+        }
+        screen_y++;
+    }
+}
+*/
+/*
+void render_floor(t_cub* cub)
+{
+	uint screen_y = WIN_HEIGTH / 2;
+	uint screen_x = 0;
+
+
+	while (screen_y < WIN_HEIGTH) {
+		screen_x = 0;
+		while (screen_x < WIN_WIDTH) {
+			uint distance = (WIN_HEIGTH / 2) / ((screen_y - WIN_HEIGTH / 2) - WIN_HEIGTH / 2);
+			uint floorX = cub->player->pos_x + distance;
+			(void)(distance);
+			(void)(floorX);
+			put_pixel_img(cub->buffer, screen_x, screen_y, 0x000000);
+			screen_x++;
+		}
+		screen_y++;
+	}
+}
+*/
+
 int	render_next_frame(void *ptr)
 {
 	t_cub		*cub;
@@ -118,7 +248,8 @@ int	render_next_frame(void *ptr)
 	zero.x = MAP_GRID_SIZE;
 	zero.y = MAP_GRID_SIZE * 4 * 12;
 	cub = ptr;
-	fill_pixel_img(cub->buffer, 0x141616);
+	fill_pixel_img(cub->buffer, 0xFFFFFF);
+	render_floor(cub);
 	threed_schene(cub);
 	//minimaps(cub, zero);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img, 0, 0);
