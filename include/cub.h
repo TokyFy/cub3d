@@ -67,7 +67,7 @@ typedef struct s_cub
 	t_mlx_image	*buffer;
 	char**		maps;
 	t_player*	player;
-	t_mlx_image* texture_01;
+	t_mlx_image* texture[4];
 }				t_cub;
 
 float	vect_dist(t_2d_vector *from, t_2d_vector *to);

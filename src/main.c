@@ -17,8 +17,19 @@
 #include <math.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 
+void* static_cub(void * ptr)
+{
+    static void* cub;
+    if(cub == NULL)
+    {
+        cub = ptr;
+        return NULL;
+    }
+    return cub;
+}
 
 float fract_part(float n)
 {
@@ -31,56 +42,65 @@ unsigned int	get_pixel_img(t_mlx_image img, int x, int y)
 				* img.bits_per_pixel / 8))));
 }
 
-void draw_line_textured(t_cub *cub , t_2d_vector *start , t_2d_vector* end , float offset)
+void draw_line_textured(t_2d_vector *start , t_2d_vector* end , float offset , t_mlx_image* texture )
 {
-	uint x = (int)(cub->texture_01->width * offset) % cub->texture_01->width;
+    t_cub *cub = static_cub(NULL);
+	uint x = (int)(texture->width * offset) % texture->width;
 	uint line_height = vect_dist(start, end);
 	uint y;
 	uint i = 0;
 
 	while(i <= line_height)
 	{
-		y = (uint)(cub->texture_01->heigth * ((float)i / (float)line_height));
-		put_pixel_img(cub->buffer, start->x , start->y + i, get_pixel_img(*cub->texture_01, x , y));
+		y = (uint)(texture->heigth * ((float)i / (float)line_height));
+		put_pixel_img(cub->buffer, start->x , start->y + i, get_pixel_img(*texture, x , y));
 		i++;
 	}
+}
+
+void    init_ray_vert_draw(int nth , t_2d_vector* from , t_2d_vector *to , t_2d_vector *line[2])
+{
+    t_cub *cub = static_cub(NULL);
+   	double		ray_angle;
+	double		perp_dist;
+	float		line_height;
+
+   	ray_angle = (cub->player->direction - 30) + (nth * ((float)60 / WIN_WIDTH));
+	perp_dist = vect_dist(from, to) * cos(M_PI / 180 * (cub->player->direction
+				- ray_angle));
+	line_height = MAP_GRID_SIZE / perp_dist * (((float)WIN_WIDTH / 2)
+			/ tan((M_PI / 3) / 2));
+	line[0]->x = nth;
+	line[0]->y = ((float)WIN_HEIGTH / 2) - (line_height / 2);
+	line[1]->x = nth;
+	line[1]->y = line[0]->y + line_height;
 }
 
 void	ray_vert_draw(t_cub *cub, int nth, t_2d_vector *from, t_2d_vector *to)
 {
 	t_2d_vector	start;
 	t_2d_vector	end;
-	double		ray_angle;
-	double		perp_dist;
-	float		line_height;
-
-	ray_angle = (cub->player->direction - 30) + (nth * ((float)60 / WIN_WIDTH));
-	perp_dist = vect_dist(from, to) * cos(M_PI / 180 * (cub->player->direction
-				- ray_angle));
-	line_height = MAP_GRID_SIZE / perp_dist * (((float)WIN_WIDTH / 2)
-			/ tan((M_PI / 3) / 2));
-	start.x = nth;
-	start.y = ((float)WIN_HEIGTH / 2) - (line_height / 2);
-	end.x = nth;
-	end.y = start.y + line_height;
 	static t_2d_vector* face;
+	t_2d_vector* line[2];
 
+	line[0] = &start;
+	line[1] = &end;
+	init_ray_vert_draw(nth, from , to, line);
 	if(!face)
 		face = to;
-
 	if(to == face)
 	{
 		if(cub->maps[(int)floor(to->y / MAP_GRID_SIZE)][(int)floor(to->x / MAP_GRID_SIZE)] == '1')
-			draw_line_textured(cub, &start, &end, 1 - fract_part(to->x / MAP_GRID_SIZE));
+			draw_line_textured(&start, &end, 1 - fract_part(to->x / MAP_GRID_SIZE) , cub->texture[0]);
 		else
-			draw_line_textured(cub, &start, &end, fract_part(to->x / MAP_GRID_SIZE));
+			draw_line_textured(&start, &end, fract_part(to->x / MAP_GRID_SIZE) , cub->texture[0]);
 	}
 	else
 	{
 		if(cub->maps[(int)floor(to->y / MAP_GRID_SIZE)][(int)floor(to->x / MAP_GRID_SIZE)] == '1')
-			draw_line_textured(cub, &start, &end,  fract_part(to->y / MAP_GRID_SIZE));
+			draw_line_textured(&start, &end,  fract_part(to->y / MAP_GRID_SIZE) , cub->texture[0]);
 		else
-			draw_line_textured(cub, &start, &end, 1 - fract_part(to->y / MAP_GRID_SIZE));
+			draw_line_textured(&start, &end, 1 - fract_part(to->y / MAP_GRID_SIZE) , cub->texture[0]);
 	}
 }
 
@@ -128,7 +148,6 @@ int	render_next_frame(void *ptr)
 	fill_pixel_img(cub->buffer, 0xFFFFFF);
 	render_floor(cub);
 	threed_schene(cub);
-	//minimaps(cub, zero);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img, 0, 0);
 	return (0);
 }
@@ -164,6 +183,12 @@ int	on_key_press(int code, void *ptr)
 	return (1);
 }
 
+t_mlx_image* load_texture(char *path)
+{
+    (void)(path);
+    return NULL;
+}
+
 int	main(void)
 {
 	t_cub		*cub;
@@ -195,7 +220,7 @@ int	main(void)
 	t_mlx_image *texture_n = malloc(sizeof(t_mlx_image));
 	texture_n->img = mlx_xpm_file_to_image(cub->mlx, "./textures/texture_09.xpm", &texture_n->width, &texture_n->heigth);
 	texture_n->addr = mlx_get_data_addr(texture_n->img , &texture_n->bits_per_pixel, &texture_n->line_length, &texture_n->endian);
-	cub->texture_01 = texture_n;
+	cub->texture[0] = texture_n;
 
 	cub->maps = ft_calloc(sizeof(char *), MAP_HEIGHT);
 	cub->player = ft_calloc(sizeof(t_player), 1);
@@ -215,6 +240,7 @@ int	main(void)
 		}
 		j++;
 	}
+	static_cub(cub);
 	mlx_hook(cub->win, 02, 1L << 0, on_key_press, cub);
 	mlx_loop_hook(cub->mlx, render_next_frame, cub);
 	mlx_loop(cub->mlx);
