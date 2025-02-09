@@ -130,53 +130,6 @@ void	threed_schene(t_cub *cub)
 	}
 }
 
-void render_floor(t_cub* cub) {
-    uint screen_y = WIN_HEIGTH / 2;  // Commence au milieu de l'écran
-    uint screen_x;
-
-    // Conversion de l'angle du joueur en radians
-    float player_dir_rad = cub->player->direction * (M_PI / 180.0);
-    float dirX = cos(player_dir_rad);
-    float dirY = sin(player_dir_rad);
-
-    // Plan de la caméra (perpendiculaire à la direction du joueur)
-    float planeX = -dirY;
-    float planeY = dirX;
-
-    while (screen_y < WIN_HEIGTH) {
-        float rowDistance = (float)MAP_GRID_SIZE / ((screen_y - WIN_HEIGTH / 2) / (float)WIN_HEIGTH);
-
-        screen_x = 0;
-        while (screen_x < WIN_WIDTH) {
-            // Calcul de la direction du rayon
-            float rayDirX = dirX + planeX * (screen_x / (float)WIN_WIDTH - 1);
-            float rayDirY = dirY + planeY * (screen_x / (float)WIN_WIDTH - 1);
-
-            // Coordonnées du monde projetées correctement
-            float worldX = (cub->player->pos_x * MAP_GRID_SIZE) + rowDistance * rayDirX;
-            float worldY = (cub->player->pos_y * MAP_GRID_SIZE) + rowDistance * rayDirY;
-
-            // Coordonnées de la grille
-
-            // Fraction des coordonnées pour détecter les lignes de la grille
-            float fracX = fmod(worldX, MAP_GRID_SIZE) / MAP_GRID_SIZE;
-            float fracY = fmod(worldY, MAP_GRID_SIZE) / MAP_GRID_SIZE;
-
-            uint color;
-
-            // Affichage des lignes de la grille
-            if ((fracX < 0.02f || fracX > 0.98f) || (fracY < 0.02f || fracY > 0.98f)) {
-                color = 0x000000;  // Noir pour les lignes de la grille
-            } else {
-                color = 0x404040;  // Gris foncé pour le sol
-            }
-
-            put_pixel_img(cub->buffer, screen_x, screen_y, color);
-            screen_x++;
-        }
-        screen_y++;
-    }
-}
 void render_floor_ceil(t_cub* cub , uint color_ceil , uint color_floor)
 {
     int screen_x = 0;
@@ -208,9 +161,8 @@ int	render_next_frame(void *ptr)
 	zero.y = MAP_GRID_SIZE * 4 * 12;
 	cub = ptr;
 	fill_pixel_img(cub->buffer, 0xFFFFFF);
-	render_floor(cub);
-	// render_floor_ceil(cub , 0x979578 , 0x3E3936);
-	// threed_schene(cub);
+	render_floor_ceil(cub , 0x979578 , 0x3E3936);
+	threed_schene(cub);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img, 0, 0);
 	return (0);
 }
