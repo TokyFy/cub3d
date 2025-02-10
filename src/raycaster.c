@@ -93,6 +93,7 @@ void	ray_vert_draw(t_cub *cub, int nth, t_2d_vector *from, t_2d_vector *to)
 
 	line[0] = &start;
 	line[1] = &end;
+	(void)(cub);
 	init_ray_vert_draw(nth, from, to, line);
 	if (!face)
 		face = to;
