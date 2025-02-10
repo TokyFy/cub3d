@@ -11,21 +11,30 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <sys/types.h>
 
 void	minimaps_direction(const t_cub *cub, t_2d_vector zero)
 {
 	t_2d_vector	from;
 	t_2d_vector	direction;
 
-	from.x = cub->player->pos_x * MAP_GRID_SIZE;
-	from.y = cub->player->pos_y * MAP_GRID_SIZE;
-	direction.x = from.x + 2 * MAP_GRID_SIZE * cos(cub->player->direction
-			* (M_PI / 180));
-	direction.y = from.y + 2 * MAP_GRID_SIZE * sin(cub->player->direction
-			* (M_PI / 180));
+	from.x = (cub->player->pos_x - ((int)cub->player->pos_x - 3)) * MAP_GRID_SIZE;
+	from.y = (cub->player->pos_y - ((int)cub->player->pos_y - 3)) * MAP_GRID_SIZE;
+	direction.x = from.x + MAP_GRID_SIZE * cos(cub->player->direction * (M_PI / 180));
+	direction.y = from.y + MAP_GRID_SIZE * sin(cub->player->direction * (M_PI / 180));
 	translate_2d_vector(&from, &zero);
 	translate_2d_vector(&direction, &zero);
 	draw_line(cub->buffer, &from, &direction, 0x000000);
+}
+
+char	get_map_type(int x, int y)
+{
+	t_cub	*cub;
+
+	cub = static_cub(NULL);
+	if (x < 0 || x >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT)
+		return (0);
+	return (cub->maps[y][x]);
 }
 
 void	minimaps(t_cub *cub, t_2d_vector zero)
@@ -35,17 +44,23 @@ void	minimaps(t_cub *cub, t_2d_vector zero)
 
 	i = 0;
 	j = 0;
-	while (j < MAP_HEIGHT)
+	draw_square_to_img(MAP_GRID_SIZE * 6, zero.x, zero.y, 0x979578);
+	while (j < 6)
 	{
 		i = 0;
-		while (i < MAP_WIDTH)
+		while (i < 6)
 		{
-			if (cub->maps[j][i] == '1')
-				draw_square_to_img(cub->buffer, MAP_GRID_SIZE, i * MAP_GRID_SIZE
-					+ zero.x, j * MAP_GRID_SIZE + zero.y);
+			if (get_map_type((int)cub->player->pos_x - 3 + i,
+					(int)cub->player->pos_y - 3 + j) == '1')
+				draw_square_to_img(MAP_GRID_SIZE, i * MAP_GRID_SIZE + zero.x, j
+					* MAP_GRID_SIZE + zero.y, 0x3E3936);
 			i++;
 		}
 		j++;
 	}
+	draw_square_to_img(4, (cub->player->pos_x - ((int)cub->player->pos_x - 3))
+		* MAP_GRID_SIZE + zero.x - 2, (cub->player->pos_y - ((int)cub->player->pos_y - 3))
+		* MAP_GRID_SIZE + zero.y - 2, 0x000000);
+
 	minimaps_direction(cub, zero);
 }

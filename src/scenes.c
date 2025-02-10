@@ -66,8 +66,8 @@ int	render_next_frame(void *ptr)
 	t_2d_vector	zero;
 
 	(void)zero;
-	zero.x = 1;
-	zero.y = 1;
+	zero.x = 32;
+	zero.y = WIN_HEIGTH - (MAP_GRID_SIZE * 6) - 32;
 	cub = ptr;
 	fill_pixel_img(cub->buffer, 0xFFFFFF);
 	render_floor_ceil(cub, 0x979578, 0x3E3936);

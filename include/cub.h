@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <math.h>
+#include <sys/types.h>
 # include <unistd.h>
 # include "mlx.h"
 # include "libft.h"
@@ -22,8 +23,8 @@
 
 #define WIN_WIDTH 1080
 #define WIN_HEIGTH 640
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
+#define MAP_WIDTH 16
+#define MAP_HEIGHT 16
 #define MAP_GRID_SIZE 16
 
 #define ARROW_UP 65362
@@ -79,7 +80,7 @@ void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		int color);
 void	fill_pixel_img(t_mlx_image *img, int color);
 unsigned int	get_pixel_img(t_mlx_image* img, int x, int y);
-void	draw_square_to_img(t_mlx_image *img, uint side, uint x, uint y);
+void	draw_square_to_img(uint side, uint x, uint y , uint color);
 t_cub	*mlx_windows(int width, int height, char *title);
 
 void	draw_line(t_mlx_image *buffer, t_2d_vector *from, t_2d_vector *to, uint color);

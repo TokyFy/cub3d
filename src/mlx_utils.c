@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <linux/limits.h>
+#include <sys/types.h>
 
 void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		int color)
@@ -44,23 +46,19 @@ void	fill_pixel_img(t_mlx_image *img, int color)
 	}
 }
 
-void	draw_square_to_img(t_mlx_image *img, uint side, uint x, uint y)
+void	draw_square_to_img(uint side, uint x, uint y , uint color)
 {
 	uint	i;
 	uint	j;
-	uint	color;
-
+	t_cub *cub = static_cub(NULL);
 	i = x;
 	j = y;
-	color = 0x5A52A3;
-	if (side < MAP_GRID_SIZE)
-		color = 0xFFFFFF;
 	while (j < y + side)
 	{
 		i = x;
 		while (i < x + side)
 		{
-			put_pixel_img(img, i, j, color);
+			put_pixel_img(cub->buffer, i, j, color);
 			i++;
 		}
 		j++;
