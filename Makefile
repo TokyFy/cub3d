@@ -22,7 +22,7 @@ LIBFT = ./libft/
 MLX = ./minilibx-linux/
 
 SRCS = main.c mlx_utils.c mlx_line.c vector_utils.c dda.c \
-		minimap.c
+		minimap.c player_move.c keys.c scenes.c texture.c raycaster.c
 
 SRC_FILES = $(addprefix $(SRC_DIR), $(SRCS))
 OBJ = $(addprefix $(OBJ_DIR), $(SRCS:.c=.o))

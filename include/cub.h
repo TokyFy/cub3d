@@ -14,13 +14,9 @@
 # define CUB_H
 
 # include <stdlib.h>
-# include <stdio.h>
 # include <math.h>
-# include <fcntl.h>
-#include <sys/types.h>
 # include <unistd.h>
 # include "mlx.h"
-# include "mlx_int.h"
 # include "libft.h"
 
 
@@ -28,12 +24,16 @@
 #define WIN_HEIGTH 640
 #define MAP_WIDTH 8
 #define MAP_HEIGHT 8
-#define MAP_GRID_SIZE 8
+#define MAP_GRID_SIZE 16
 
 #define ARROW_UP 65362
 #define ARROW_DOWN 65364
 #define ARROW_RIGHT 65361
 #define ARROW_LEFT 65363
+#define KEY_W 119
+#define KEY_A 97
+#define KEY_S 115
+#define KEY_D 100
 
 
 typedef struct s_2d_vector
@@ -78,6 +78,7 @@ void copy_2d_vector(t_2d_vector *from , t_2d_vector *to);
 void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		int color);
 void	fill_pixel_img(t_mlx_image *img, int color);
+unsigned int	get_pixel_img(t_mlx_image* img, int x, int y);
 void	draw_square_to_img(t_mlx_image *img, uint side, uint x, uint y);
 t_cub	*mlx_windows(int width, int height, char *title);
 
@@ -89,4 +90,22 @@ void	find_ray_horz_intersec(t_2d_vector *from, t_2d_vector *to, double angle, t_
 void minimaps_direction(const t_cub *cub , t_2d_vector zero);
 void minimaps_player(t_cub *cub , t_2d_vector zero);
 void minimaps(t_cub *cub , t_2d_vector zero);
+
+void* static_cub(void * ptr);
+
+float fract_part(float n);
+
+void set_player_position(float dx , float dy);
+void parallel_move(int code , t_cub * cub);
+void perpedicular_move(int code , t_cub * cub);
+void move_player(int code , void *ptr);
+void rotate_player(int code , t_cub *cub);
+
+void	threed_schene(t_cub *cub);
+void render_floor_ceil(t_cub* cub , uint color_ceil , uint color_floor);
+int	render_next_frame(void *ptr);
+t_mlx_image* load_texture(t_cub* cub , char *path);
+int	on_key_press(int code, void *ptr);
+
+void	ray_vert_draw(t_cub *cub, int nth, t_2d_vector *from, t_2d_vector *to);
 #endif

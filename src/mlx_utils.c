@@ -6,7 +6,7 @@
 /*   By: franaivo <franaivo@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:01:20 by franaivo          #+#    #+#             */
-/*   Updated: 2025/02/03 09:01:21 by franaivo         ###   ########.fr       */
+/*   Updated: 2025/02/10 09:42:19 by franaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,10 @@ t_cub	*mlx_windows(int width, int height, char *title)
 		return (NULL);
 	}
 	return (cub);
+}
+
+unsigned int	get_pixel_img(t_mlx_image *img, int x, int y)
+{
+	return (*(unsigned int *)((img->addr + (y * img->line_length) + (x
+				* img->bits_per_pixel / 8))));
 }

@@ -31,14 +31,19 @@ float	normalize_angle(float angle)
 	return (angle);
 }
 
-void translate_2d_vector(t_2d_vector *from , t_2d_vector *to)
+void	translate_2d_vector(t_2d_vector *from, t_2d_vector *to)
 {
 	from->x += to->x;
 	from->y += to->y;
 }
 
-void copy_2d_vector(t_2d_vector *from , t_2d_vector *to)
+void	copy_2d_vector(t_2d_vector *from, t_2d_vector *to)
 {
 	to->x = from->x;
 	to->y = from->y;
+}
+
+float	fract_part(float n)
+{
+	return (n - floor(n));
 }
