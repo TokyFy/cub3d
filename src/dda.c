@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <sys/types.h>
 
 static void	get_vertical_step(double angle, float *step_x, float *step_y)
 {
@@ -77,6 +78,7 @@ void	find_ray_horz_intersec(t_2d_vector *from, t_2d_vector *to, double angle,
 	t_2d_vector	intersec;
 	t_2d_vector	step;
 	int			map_y;
+
 	angle = normalize_angle(angle);
 	get_horizontal_step(angle, &step.x, &step.y);
 	if (step.y < 0)

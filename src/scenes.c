@@ -50,7 +50,7 @@ void	render_floor_ceil(t_cub *cub, uint color_ceil, uint color_floor)
 	color = color_ceil;
 	while (screen_y < cub->buffer->heigth)
 	{
-		if (screen_y >= (cub->buffer->heigth / 2 + waves))
+		if (screen_y >= (cub->buffer->heigth / 2 + abs(waves)))
 			color = color_floor;
 		screen_x = 0;
 		while (screen_x < cub->buffer->width)

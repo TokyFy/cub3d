@@ -12,6 +12,7 @@
 
 #include <cub.h>
 #include <math.h>
+#include <stdio.h>
 
 void	set_player_position(float dx, float dy)
 {
@@ -38,14 +39,14 @@ void	parallel_move(int code, t_cub *cub)
 
 	dx = cub->player->pos_x;
 	dy = cub->player->pos_y;
-	if (!(code == KEY_S || code == KEY_W))
+	if (!(code == KEY_S || code == KEY_W || code == ARROW_UP || code == ARROW_DOWN))
 		return ;
-	if (code == KEY_W)
+	if (code == KEY_W || code == ARROW_UP)
 	{
 		dx += 0.15 * cos(cub->player->direction * (M_PI / 180));
 		dy += 0.15 * sin(cub->player->direction * (M_PI / 180));
 	}
-	else if (code == KEY_S)
+	else if (code == KEY_S || code == ARROW_DOWN)
 	{
 		dx -= 0.15 * cos(cub->player->direction * (M_PI / 180));
 		dy -= 0.15 * sin(cub->player->direction * (M_PI / 180));

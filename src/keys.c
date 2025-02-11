@@ -17,7 +17,7 @@ int	on_key_press(int code, void *ptr)
 	t_cub	*cub;
 
 	cub = ptr;
-	if (code <= KEY_W)
+	if (code <= KEY_W || code == ARROW_UP || code == ARROW_DOWN)
 	{
 		move_player(code, ptr);
 		return (1);

@@ -33,13 +33,15 @@ int	main(void)
 	cub = mlx_windows(WIN_WIDTH, WIN_HEIGTH, "cub3D");
 	if (!cub)
 		return (1);
-	char maps[6][6] = {
-	    {'1', '1', '1', '1', '1', '1'},
-	    {'1', '0', '0', '0', '0', '1'},
-	    {'1', '0', '0', '0', '0', '1'},
-	    {'1', '0', '0', '0', '0', '1'},
-	    {'1', '0', '0', '0', '0', '1'},
-	    {'1', '1', '1', '1', '1', '1'},
+	char maps[8][8] = {
+	    {'1', '1', '1', '1' , '1' , '1' , '1' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '1', '1', '1' , '1' , '1' , '1' , '1' },
 	};
 	buffer = ft_calloc(sizeof(t_mlx_image), 1);
 	buffer->img = mlx_new_image(cub->mlx, WIN_WIDTH, WIN_HEIGTH);
@@ -51,11 +53,11 @@ int	main(void)
 	cub->player = ft_calloc(sizeof(t_player), 1);
 	cub->player->pos_x = 1.5;
 	cub->player->pos_y = 1.5;
-	cub->player->direction = 0;
+	cub->player->direction = 90;
 	i = 0;
 	j = 0;
-	cub->map_height = 6;
-	cub->map_width = 6;
+	cub->map_height = 8;
+	cub->map_width = 8;
 	cub->maps = ft_calloc(sizeof(char *), cub->map_height);
 	while (j < cub->map_height)
 	{
