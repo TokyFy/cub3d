@@ -36,7 +36,7 @@ static void	get_horizontal_step(double angle, float *step_x, float *step_y)
 
 int	check_wall(t_cub *cub, int x, int y)
 {
-	if (y < 0 || y >= MAP_HEIGHT || x < 0 || x >= MAP_WIDTH)
+	if (y < 0 || y >= (int)cub->map_height || x < 0 || x >= (int)cub->map_width)
 		return (1);
 	return (cub->maps[y][x] == '1');
 }
@@ -77,7 +77,6 @@ void	find_ray_horz_intersec(t_2d_vector *from, t_2d_vector *to, double angle,
 	t_2d_vector	intersec;
 	t_2d_vector	step;
 	int			map_y;
-
 	angle = normalize_angle(angle);
 	get_horizontal_step(angle, &step.x, &step.y);
 	if (step.y < 0)

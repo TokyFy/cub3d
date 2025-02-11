@@ -27,29 +27,19 @@ int	main(void)
 {
 	t_cub		*cub;
 	t_mlx_image	*buffer;
-	int			i;
-	int			j;
+	uint			i;
+	uint			j;
 
 	cub = mlx_windows(WIN_WIDTH, WIN_HEIGTH, "cub3D");
 	if (!cub)
 		return (1);
-	char maps[MAP_HEIGHT][MAP_WIDTH] = {
-	    {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-	    {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-	    {'1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '1', '0', '1', '1', '0', '1'},
-	    {'1', '0', '1', '0', '1', '0', '1', '0', '0', '0', '1', '0', '0', '1', '0', '1'},
-	    {'1', '0', '1', '0', '1', '0', '1', '0', '1', '0', '1', '1', '0', '1', '0', '1'},
-	    {'1', '0', '1', '0', '0', '0', '1', '0', '1', '0', '0', '0', '0', '1', '0', '1'},
-	    {'1', '0', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '0', '1'},
-	    {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1', '0', '1'},
-	    {'1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '0', '1', '0', '1', '0', '1'},
-	    {'1', '0', '1', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '1', '0', '1'},
-	    {'1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '0', '1', '0', '1'},
-	    {'1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
-	    {'1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '0', '1'},
-	    {'1', '0', '0', '0', '1', '0', '0', '0', '0', '1', '0', '0', '0', '0', '1' ,'1'},
-	    {'1', '0', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1' ,'1'},
-	    {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
+	char maps[6][6] = {
+	    {'1', '1', '1', '1', '1', '1'},
+	    {'1', '0', '0', '0', '0', '1'},
+	    {'1', '0', '0', '0', '0', '1'},
+	    {'1', '0', '0', '0', '0', '1'},
+	    {'1', '0', '0', '0', '0', '1'},
+	    {'1', '1', '1', '1', '1', '1'},
 	};
 	buffer = ft_calloc(sizeof(t_mlx_image), 1);
 	buffer->img = mlx_new_image(cub->mlx, WIN_WIDTH, WIN_HEIGTH);
@@ -58,30 +48,34 @@ int	main(void)
 	buffer->addr = mlx_get_data_addr(buffer->img, &buffer->bits_per_pixel,
 			&buffer->line_length, &buffer->endian);
 	cub->buffer = buffer;
-	cub->maps = ft_calloc(sizeof(char *), MAP_HEIGHT);
 	cub->player = ft_calloc(sizeof(t_player), 1);
 	cub->player->pos_x = 1.5;
 	cub->player->pos_y = 1.5;
-	cub->player->direction = 270;
+	cub->player->direction = 0;
 	i = 0;
 	j = 0;
-	while (j < MAP_HEIGHT)
+	cub->map_height = 6;
+	cub->map_width = 6;
+	cub->maps = ft_calloc(sizeof(char *), cub->map_height);
+	while (j < cub->map_height)
 	{
 		i = 0;
-		cub->maps[j] = ft_calloc(sizeof(char), MAP_WIDTH);
-		while (i < MAP_WIDTH)
+		cub->maps[j] = ft_calloc(sizeof(char), cub->map_width);
+		while (i < cub->map_width)
 		{
 			cub->maps[j][i] = maps[j][i];
 			i++;
 		}
 		j++;
 	}
-	static_cub(cub);
-	cub->texture[0] = load_texture(cub ,"./textures/texture_26.xpm");
-	cub->texture[1] = load_texture(cub ,"./textures/texture_27.xpm");
-	cub->texture[2] = load_texture(cub ,"./textures/texture_23.xpm");
-	cub->texture[3] = load_texture(cub ,"./textures/texture_22.xpm");
+	cub->floor_color = 0x1A2624;
+	cub->ceil_color = 0x4DA8A8;
+	cub->texture[0] = load_texture(cub ,"./textures/wall_32.xpm");
+	cub->texture[1] = load_texture(cub ,"./textures/wall_32.xpm");
+	cub->texture[2] = load_texture(cub ,"./textures/wall_65.xpm");
+	cub->texture[3] = load_texture(cub ,"./textures/wall_65.xpm");
 
+	static_cub(cub);
 	mlx_hook(cub->win, 02, 1L << 0, on_key_press, cub);
 	mlx_loop_hook(cub->mlx, render_next_frame, cub);
 	mlx_loop(cub->mlx);

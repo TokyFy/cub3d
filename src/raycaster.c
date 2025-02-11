@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <math.h>
+
 
 void	draw_line_textured(t_2d_vector *start, t_2d_vector *end, float offset,
 		t_mlx_image *texture)
@@ -41,15 +43,16 @@ void	init_ray_vert_draw(int nth, t_2d_vector *from, t_2d_vector *to,
 	double	ray_angle;
 	double	perp_dist;
 	float	line_height;
-
 	cub = static_cub(NULL);
+
+	int waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
 	ray_angle = (cub->player->direction - 30) + (nth * ((float)60 / WIN_WIDTH));
 	perp_dist = vect_dist(from, to) * cos(M_PI / 180 * (cub->player->direction
 				- ray_angle));
 	line_height = MAP_GRID_SIZE / perp_dist * (((float)WIN_WIDTH / 2)
 			/ tan((M_PI / 3) / 2));
 	line[0]->x = nth;
-	line[0]->y = ((float)WIN_HEIGTH / 2) - (line_height / 2);
+	line[0]->y = ((float)WIN_HEIGTH / 2) - (line_height / 2) + waves;
 	line[1]->x = nth;
 	line[1]->y = line[0]->y + line_height;
 }

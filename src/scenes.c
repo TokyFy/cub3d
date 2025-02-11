@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <sys/types.h>
 
 void	threed_schene(t_cub *cub)
 {
@@ -42,13 +43,14 @@ void	render_floor_ceil(t_cub *cub, uint color_ceil, uint color_floor)
 	int		screen_x;
 	int		screen_y;
 	uint	color;
+	int waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
 
 	screen_x = 0;
 	screen_y = 0;
 	color = color_ceil;
 	while (screen_y < cub->buffer->heigth)
 	{
-		if (screen_y >= (cub->buffer->heigth / 2))
+		if (screen_y >= (cub->buffer->heigth / 2 + waves))
 			color = color_floor;
 		screen_x = 0;
 		while (screen_x < cub->buffer->width)
@@ -70,7 +72,7 @@ int	render_next_frame(void *ptr)
 	zero.y = WIN_HEIGTH - (MAP_GRID_SIZE * 6) - 32;
 	cub = ptr;
 	fill_pixel_img(cub->buffer, 0xFFFFFF);
-	render_floor_ceil(cub, 0x979578, 0x3E3936);
+	render_floor_ceil(cub, cub->ceil_color, cub->floor_color);
 	threed_schene(cub);
 	minimaps(cub, zero);
 	mlx_put_image_to_window(cub->mlx, cub->win, (cub->buffer)->img, 0, 0);

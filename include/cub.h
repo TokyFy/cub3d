@@ -23,8 +23,6 @@
 
 #define WIN_WIDTH 1080
 #define WIN_HEIGTH 640
-#define MAP_WIDTH 16
-#define MAP_HEIGHT 16
 #define MAP_GRID_SIZE 16
 
 #define ARROW_UP 65362
@@ -67,6 +65,10 @@ typedef struct s_cub
 	void		*win;
 	t_mlx_image	*buffer;
 	char**		maps;
+	uint map_height;
+	uint map_width;
+	uint floor_color;
+	uint ceil_color;
 	t_player*	player;
 	t_mlx_image* texture[4];
 }				t_cub;

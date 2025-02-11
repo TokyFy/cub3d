@@ -11,15 +11,15 @@
 /* ************************************************************************** */
 
 #include <cub.h>
+#include <math.h>
 
 void	set_player_position(float dx, float dy)
 {
 	t_cub	*cub;
 
 	cub = static_cub(NULL);
-	dx = round(dx * 100) / 100;
-	dy = round(dy * 100) / 100;
-	if (!((int)dx < MAP_WIDTH && (int)dy < MAP_HEIGHT))
+
+	if (!((int)dx < (int)cub->map_width && (int)dy < (int)cub->map_height))
 		return ;
 	if (cub->maps[(int)(cub->player->pos_y)][(int)(dx)] != '1')
 	{
@@ -42,13 +42,13 @@ void	parallel_move(int code, t_cub *cub)
 		return ;
 	if (code == KEY_W)
 	{
-		dx += 0.1 * cos(cub->player->direction * (M_PI / 180));
-		dy += 0.1 * sin(cub->player->direction * (M_PI / 180));
+		dx += 0.15 * cos(cub->player->direction * (M_PI / 180));
+		dy += 0.15 * sin(cub->player->direction * (M_PI / 180));
 	}
 	else if (code == KEY_S)
 	{
-		dx -= 0.1 * cos(cub->player->direction * (M_PI / 180));
-		dy -= 0.1 * sin(cub->player->direction * (M_PI / 180));
+		dx -= 0.15 * cos(cub->player->direction * (M_PI / 180));
+		dy -= 0.15 * sin(cub->player->direction * (M_PI / 180));
 	}
 	set_player_position(dx, dy);
 }
@@ -64,13 +64,13 @@ void	perpedicular_move(int code, t_cub *cub)
 		return ;
 	if (code == KEY_A)
 	{
-		dx += 0.1 * cos(cub->player->direction * (M_PI / 180) - M_PI / 2);
-		dy += 0.1 * sin(cub->player->direction * (M_PI / 180) - M_PI / 2);
+		dx += 0.15 * cos(cub->player->direction * (M_PI / 180) - M_PI / 2);
+		dy += 0.15 * sin(cub->player->direction * (M_PI / 180) - M_PI / 2);
 	}
 	else if (code == KEY_D)
 	{
-		dx += 0.1 * cos(cub->player->direction * (M_PI / 180) + M_PI / 2);
-		dy += 0.1 * sin(cub->player->direction * (M_PI / 180) + M_PI / 2);
+		dx += 0.15 * cos(cub->player->direction * (M_PI / 180) + M_PI / 2);
+		dy += 0.15 * sin(cub->player->direction * (M_PI / 180) + M_PI / 2);
 	}
 	set_player_position(dx, dy);
 }
