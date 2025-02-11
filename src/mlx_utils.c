@@ -6,7 +6,7 @@
 /*   By: franaivo <franaivo@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:01:20 by franaivo          #+#    #+#             */
-/*   Updated: 2025/02/10 09:42:19 by franaivo         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:22:01 by franaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,13 @@ void	fill_pixel_img(t_mlx_image *img, int color)
 	}
 }
 
-void	draw_square_to_img(uint side, uint x, uint y , uint color)
+void	draw_square_to_img(uint side, uint x, uint y, uint color)
 {
 	uint	i;
 	uint	j;
-	t_cub *cub = static_cub(NULL);
+	t_cub	*cub;
+
+	cub = static_cub(NULL);
 	i = x;
 	j = y;
 	while (j < y + side)

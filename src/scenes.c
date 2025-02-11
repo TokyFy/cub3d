@@ -30,7 +30,7 @@ void	threed_schene(t_cub *cub)
 		find_ray_horz_intersec(&from, &to_horz, a, cub);
 		find_ray_vert_intersec(&from, &to_vert, a, cub);
 		if (vect_dist(&from, &to_horz) < vect_dist(&from, &to_vert))
-			ray_vert_draw(cub, i, &from, &to_horz);
+			ray_vert_draw(cub, -i, &from, &to_horz);
 		else
 			ray_vert_draw(cub, i, &from, &to_vert);
 		a += (float)60 / WIN_WIDTH;
@@ -43,8 +43,9 @@ void	render_floor_ceil(t_cub *cub, uint color_ceil, uint color_floor)
 	int		screen_x;
 	int		screen_y;
 	uint	color;
-	int waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
+	int		waves;
 
+	waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
 	screen_x = 0;
 	screen_y = 0;
 	color = color_ceil;

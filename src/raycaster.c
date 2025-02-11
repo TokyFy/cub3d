@@ -12,7 +12,8 @@
 
 #include <cub.h>
 #include <math.h>
-
+#include <stdio.h>
+#include <unistd.h>
 
 void	draw_line_textured(t_2d_vector *start, t_2d_vector *end, float offset,
 		t_mlx_image *texture)
@@ -43,9 +44,10 @@ void	init_ray_vert_draw(int nth, t_2d_vector *from, t_2d_vector *to,
 	double	ray_angle;
 	double	perp_dist;
 	float	line_height;
-	cub = static_cub(NULL);
+	int		waves;
 
-	int waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
+	cub = static_cub(NULL);
+	waves = 6 * cos(5 * (cub->player->pos_x + cub->player->pos_y));
 	ray_angle = (cub->player->direction - 30) + (nth * ((float)60 / WIN_WIDTH));
 	perp_dist = vect_dist(from, to) * cos(M_PI / 180 * (cub->player->direction
 				- ray_angle));
@@ -89,18 +91,15 @@ void	ray_vert_east_west(t_2d_vector *start, t_2d_vector *end,
 
 void	ray_vert_draw(t_cub *cub, int nth, t_2d_vector *from, t_2d_vector *to)
 {
-	t_2d_vector			start;
-	t_2d_vector			end;
-	static t_2d_vector	*face;
-	t_2d_vector			*line[2];
+	t_2d_vector	start;
+	t_2d_vector	end;
+	t_2d_vector	*line[2];
 
 	line[0] = &start;
 	line[1] = &end;
 	(void)(cub);
-	init_ray_vert_draw(nth, from, to, line);
-	if (!face)
-		face = to;
-	if (to == face)
+	init_ray_vert_draw(abs(nth), from, to, line);
+	if (nth <= 0)
 	{
 		ray_vert_north_south(&start, &end, to);
 	}

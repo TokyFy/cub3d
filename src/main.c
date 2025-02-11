@@ -35,12 +35,12 @@ int	main(void)
 		return (1);
 	char maps[8][8] = {
 	    {'1', '1', '1', '1' , '1' , '1' , '1' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
-	    {'1', '0', '1', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '1' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '1' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '0' , '1' , '0' , '1' },
+	    {'1', '0', '0', '0' , '0' , '0' , '0' , '1' },
+	    {'1', '0', '1', '0' , '1' , '1' , '0' , '1' },
+	    {'1', '0', '1', '0' , '1' , '0' , '0' , '1' },
 	    {'1', '1', '1', '1' , '1' , '1' , '1' , '1' },
 	};
 	buffer = ft_calloc(sizeof(t_mlx_image), 1);
@@ -53,7 +53,7 @@ int	main(void)
 	cub->player = ft_calloc(sizeof(t_player), 1);
 	cub->player->pos_x = 1.5;
 	cub->player->pos_y = 1.5;
-	cub->player->direction = 90;
+	cub->player->direction = 270;
 	i = 0;
 	j = 0;
 	cub->map_height = 8;
@@ -70,12 +70,12 @@ int	main(void)
 		}
 		j++;
 	}
-	cub->floor_color = 0x1A2624;
-	cub->ceil_color = 0x4DA8A8;
-	cub->texture[0] = load_texture(cub ,"./textures/wall_32.xpm");
-	cub->texture[1] = load_texture(cub ,"./textures/wall_32.xpm");
-	cub->texture[2] = load_texture(cub ,"./textures/wall_65.xpm");
-	cub->texture[3] = load_texture(cub ,"./textures/wall_65.xpm");
+	cub->floor_color = 0x1E2020;
+	cub->ceil_color = 0xB18421;
+	cub->texture[0] = load_texture(cub ,"./textures/texture_23.xpm");
+	cub->texture[1] = load_texture(cub ,"./textures/texture_22.xpm");
+	cub->texture[2] = load_texture(cub ,"./textures/texture_26.xpm");
+	cub->texture[3] = load_texture(cub ,"./textures/texture_27.xpm");
 
 	static_cub(cub);
 	mlx_hook(cub->win, 02, 1L << 0, on_key_press, cub);

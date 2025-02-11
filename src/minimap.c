@@ -18,10 +18,14 @@ void	minimaps_direction(const t_cub *cub, t_2d_vector zero)
 	t_2d_vector	from;
 	t_2d_vector	direction;
 
-	from.x = (cub->player->pos_x - ((int)cub->player->pos_x - 3)) * MAP_GRID_SIZE;
-	from.y = (cub->player->pos_y - ((int)cub->player->pos_y - 3)) * MAP_GRID_SIZE;
-	direction.x = from.x + MAP_GRID_SIZE * cos(cub->player->direction * (M_PI / 180));
-	direction.y = from.y + MAP_GRID_SIZE * sin(cub->player->direction * (M_PI / 180));
+	from.x = (cub->player->pos_x - ((int)cub->player->pos_x - 3))
+		* MAP_GRID_SIZE;
+	from.y = (cub->player->pos_y - ((int)cub->player->pos_y - 3))
+		* MAP_GRID_SIZE;
+	direction.x = from.x + MAP_GRID_SIZE * cos(cub->player->direction * (M_PI
+				/ 180));
+	direction.y = from.y + MAP_GRID_SIZE * sin(cub->player->direction * (M_PI
+				/ 180));
 	translate_2d_vector(&from, &zero);
 	translate_2d_vector(&direction, &zero);
 	draw_line(cub->buffer, &from, &direction, cub->floor_color);
@@ -59,8 +63,8 @@ void	minimaps(t_cub *cub, t_2d_vector zero)
 		j++;
 	}
 	draw_square_to_img(4, (cub->player->pos_x - ((int)cub->player->pos_x - 3))
-		* MAP_GRID_SIZE + zero.x - 2, (cub->player->pos_y - ((int)cub->player->pos_y - 3))
-		* MAP_GRID_SIZE + zero.y - 2, cub->floor_color);
-
+		* MAP_GRID_SIZE + zero.x - 2, (cub->player->pos_y
+			- ((int)cub->player->pos_y - 3)) * MAP_GRID_SIZE + zero.y - 2,
+		cub->floor_color);
 	minimaps_direction(cub, zero);
 }

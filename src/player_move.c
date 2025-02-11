@@ -19,7 +19,6 @@ void	set_player_position(float dx, float dy)
 	t_cub	*cub;
 
 	cub = static_cub(NULL);
-
 	if (!((int)dx < (int)cub->map_width && (int)dy < (int)cub->map_height))
 		return ;
 	if (cub->maps[(int)(cub->player->pos_y)][(int)(dx)] != '1')
@@ -39,7 +38,8 @@ void	parallel_move(int code, t_cub *cub)
 
 	dx = cub->player->pos_x;
 	dy = cub->player->pos_y;
-	if (!(code == KEY_S || code == KEY_W || code == ARROW_UP || code == ARROW_DOWN))
+	if (!(code == KEY_S || code == KEY_W || code == ARROW_UP
+			|| code == ARROW_DOWN))
 		return ;
 	if (code == KEY_W || code == ARROW_UP)
 	{
