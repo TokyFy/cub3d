@@ -6,7 +6,7 @@
 /*   By: franaivo <franaivo@student.42antanana      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 09:01:20 by franaivo          #+#    #+#             */
-/*   Updated: 2025/02/11 15:22:01 by franaivo         ###   ########.fr       */
+/*   Updated: 2025/02/17 07:47:05 by franaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		return ;
 	if (x > (unsigned int)img->width || y > (unsigned int)img->heigth)
 	{
-	   ft_putstr_fd("_error : pixel bound violated\n", STDERR_FILENO);
-	   return ;
+		ft_putstr_fd("_error : pixel bound violated\n", STDERR_FILENO);
+		return ;
 	}
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;

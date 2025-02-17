@@ -28,15 +28,15 @@ void	draw_line_textured(t_2d_vector *start, t_2d_vector *end, float offset,
 	x = (int)(texture->width * offset) % texture->width;
 	line_height = vect_dist(start, end);
 	i = 0;
-	if(start->y < 0)
-	   i = -1 * start->y;
+	if (start->y < 0)
+		i = -1 * start->y;
 	while (i <= line_height)
 	{
-	    if(start->y + i >= 0 && start->y + i <= WIN_HEIGTH)
+		if (start->y + i >= 0 && start->y + i <= WIN_HEIGTH)
 		{
-		    y = (uint)(texture->heigth * ((float)i / (float)line_height));
+			y = (uint)(texture->heigth * ((float)i / (float)line_height));
 			put_pixel_img(cub->buffer, start->x, start->y + i,
-			get_pixel_img(texture, x, y));
+				get_pixel_img(texture, x, y));
 		}
 		i++;
 	}

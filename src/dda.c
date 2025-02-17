@@ -67,7 +67,6 @@ void	find_ray_vert_intersec(t_2d_vector *from, t_2d_vector *to, double angle,
 			break ;
 		intersec.x += step.x;
 		intersec.y += step.y;
-		put_pixel_img(cub->buffer, intersec.x, intersec.y, 0xFFFFFF);
 	}
 	to->x = intersec.x * MAP_GRID_SIZE;
 	to->y = intersec.y * MAP_GRID_SIZE;
