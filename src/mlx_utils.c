@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <cub.h>
 #include <linux/limits.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 		int color)
@@ -22,7 +24,10 @@ void	put_pixel_img(t_mlx_image *img, unsigned int x, unsigned int y,
 	if ((unsigned int)color == 0xFF000000)
 		return ;
 	if (x > (unsigned int)img->width || y > (unsigned int)img->heigth)
-		return ;
+	{
+	   ft_putstr_fd("_error : pixel bound violated\n", STDERR_FILENO);
+	   return ;
+	}
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }

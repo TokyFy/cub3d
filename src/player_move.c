@@ -92,7 +92,7 @@ void	rotate_player(int code, t_cub *cub)
 		return ;
 	if (code == ARROW_LEFT)
 	{
-		cub->player->direction += 3;
+		cub->player->direction += 2;
 		if (cub->player->direction > 360)
 			cub->player->direction = 0;
 	}
@@ -101,6 +101,6 @@ void	rotate_player(int code, t_cub *cub)
 		if (cub->player->direction <= 0)
 			cub->player->direction = 360;
 		else
-			cub->player->direction -= 3;
+			cub->player->direction -= 2;
 	}
 }

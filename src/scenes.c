@@ -12,6 +12,7 @@
 
 #include <cub.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 void	threed_schene(t_cub *cub)
 {
@@ -51,7 +52,7 @@ void	render_floor_ceil(t_cub *cub, uint color_ceil, uint color_floor)
 	color = color_ceil;
 	while (screen_y < cub->buffer->heigth)
 	{
-		if (screen_y >= (cub->buffer->heigth / 2 + abs(waves)))
+		if (screen_y >= (cub->buffer->heigth / 2 + waves))
 			color = color_floor;
 		screen_x = 0;
 		while (screen_x < cub->buffer->width)
@@ -72,7 +73,7 @@ int	render_next_frame(void *ptr)
 	zero.x = 32;
 	zero.y = WIN_HEIGTH - (MAP_GRID_SIZE * 6) - 32;
 	cub = ptr;
-	fill_pixel_img(cub->buffer, 0xFFFFFF);
+	fill_pixel_img(cub->buffer, 0x000000);
 	render_floor_ceil(cub, cub->ceil_color, cub->floor_color);
 	threed_schene(cub);
 	minimaps(cub, zero);
