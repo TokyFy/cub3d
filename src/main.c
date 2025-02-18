@@ -34,10 +34,10 @@ int	main(void)
 	if (!cub)
 		return (1);
 
-	char maps[5][5] = {
-	    {"11111"},
-	    {"10001"},
-	    {"11111"}
+	char maps[3][17] = {
+	    {"11111111111111111"},
+	    {"10000000000000001"},
+	    {"11111111111111111"}
 	};
 
 	buffer = ft_calloc(sizeof(t_mlx_image), 1);
@@ -53,8 +53,8 @@ int	main(void)
 	cub->player->direction = 0;
 	i = 0;
 	j = 0;
-	cub->map_height = 5;
-	cub->map_width = 5;
+	cub->map_height = 3;
+	cub->map_width = 17;
 	cub->maps = ft_calloc(sizeof(char *), cub->map_height);
 	while (j < cub->map_height)
 	{
@@ -67,13 +67,13 @@ int	main(void)
 		}
 		j++;
 	}
-	cub->floor_color = 0xE1E1E1;
+	cub->floor_color = 0xbdbae3;
 	cub->ceil_color = 0x000000;
 
-	cub->texture[0] = load_texture(cub ,"./textures/eye_1.xpm");
-	cub->texture[1] = load_texture(cub ,"./textures/eye_2.xpm");
-	cub->texture[2] = load_texture(cub ,"./textures/eye_5.xpm");
-	cub->texture[3] = load_texture(cub ,"./textures/eye_4.xpm");;
+	cub->texture[0] = load_texture(cub ,"./textures/void_2.xpm");
+	cub->texture[1] = load_texture(cub ,"./textures/void_2.xpm");
+	cub->texture[2] = load_texture(cub ,"./textures/void_1.xpm");
+	cub->texture[3] = load_texture(cub ,"./textures/void_1.xpm");;
 	static_cub(cub);
 	mlx_hook(cub->win, 02, 1L << 0, on_key_press, cub);
 	mlx_loop_hook(cub->mlx, render_next_frame, cub);
