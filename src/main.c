@@ -6,7 +6,7 @@
 /*   By: sravonin <sravonin@student.42antananari    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:57:24 by sravonin          #+#    #+#             */
-/*   Updated: 2025/01/27 08:48:31 by sravonin         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:25:55 by franaivo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@ int	main(void)
 	if (!cub)
 		return (1);
 
-	char maps[3][17] = {
+	char maps[7][17] = {
 	    {"11111111111111111"},
+	    {"10001000000010001"},
 	    {"10000000000000001"},
+	    {"10001000100010001"},
+	    {"10000000000000001"},
+	    {"10001000000010001"},
 	    {"11111111111111111"}
 	};
 
@@ -53,7 +57,7 @@ int	main(void)
 	cub->player->direction = 0;
 	i = 0;
 	j = 0;
-	cub->map_height = 3;
+	cub->map_height = 7;
 	cub->map_width = 17;
 	cub->maps = ft_calloc(sizeof(char *), cub->map_height);
 	while (j < cub->map_height)
@@ -67,13 +71,13 @@ int	main(void)
 		}
 		j++;
 	}
-	cub->floor_color = 0xbdbae3;
-	cub->ceil_color = 0x000000;
+	cub->floor_color = 0x000000;
+	cub->ceil_color = 0x151515;
 
-	cub->texture[0] = load_texture(cub ,"./textures/void_2.xpm");
-	cub->texture[1] = load_texture(cub ,"./textures/void_2.xpm");
-	cub->texture[2] = load_texture(cub ,"./textures/void_1.xpm");
-	cub->texture[3] = load_texture(cub ,"./textures/void_1.xpm");;
+	cub->texture[0] = load_texture(cub ,"./textures/scifi_1.xpm");
+	cub->texture[1] = load_texture(cub ,"./textures/scifi_2.xpm");
+	cub->texture[2] = load_texture(cub ,"./textures/scifi_3.xpm");
+	cub->texture[3] = load_texture(cub ,"./textures/scifi_4.xpm");;
 	static_cub(cub);
 	mlx_hook(cub->win, 02, 1L << 0, on_key_press, cub);
 	mlx_loop_hook(cub->mlx, render_next_frame, cub);
